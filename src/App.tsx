@@ -513,7 +513,7 @@ function App() {
                         setFlaggingProduct({ productId: product.id, store: store.id });
                         setShowFlagModal(true);
                       }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-orange-100 rounded"
+                      className="p-1 hover:bg-orange-100 rounded transition-colors duration-200"
                       title="Flag incorrect price"
                     >
                       <Flag className="h-3 w-3 text-orange-400 hover:text-orange-600" />
@@ -551,7 +551,7 @@ function App() {
                     setFlaggingProduct({ productId: product.id, store: lowestStore });
                     setShowFlagModal(true);
                   }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-orange-100 rounded"
+                  className="p-1 hover:bg-orange-100 rounded transition-colors duration-200"
                   title="Flag incorrect price"
                 >
                   <Flag className="h-4 w-4 text-orange-400 hover:text-orange-600" />
