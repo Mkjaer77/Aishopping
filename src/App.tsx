@@ -377,6 +377,36 @@ function App() {
     }, 0);
   };
 
+  const calculateSupermarketTotals = () => {
+    const totals = {
+      seijo: 0,
+      maruetsu: 0,
+      ff: 0
+    };
+
+    favoriteProducts.forEach(product => {
+      const quantity = quantities[product.id] || 1;
+      totals.seijo += product.prices.seijo * quantity;
+      totals.maruetsu += product.prices.maruetsu * quantity;
+      totals.ff += product.prices.ff * quantity;
+    });
+
+    return totals;
+  };
+
+  const getCheapestSupermarket = () => {
+    const totals = calculateSupermarketTotals();
+    const cheapestStore = Object.entries(totals).reduce((min, [store, total]) => 
+      total < min.total ? { store, total } : min
+    , { store: 'seijo', total: totals.seijo });
+    
+    return {
+      store: cheapestStore.store,
+      total: cheapestStore.total,
+      name: getStoreName(cheapestStore.store)
+    };
+  };
+
   const filteredProducts = useMemo(() => {
     return products.filter(product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -385,6 +415,8 @@ function App() {
   }, [searchTerm]);
 
   const favoriteProducts = filteredProducts.filter(product => favorites.has(product.id));
+  const cheapestSupermarket = getCheapestSupermarket();
+  const supermarketTotals = calculateSupermarketTotals();
 
   const ProductCard = ({ product, showAllPrices = false, showQuantity = false }: { product: Product; showAllPrices?: boolean; showQuantity?: boolean }) => {
     const lowestPrice = getLowestPrice(product.prices);
@@ -610,21 +642,71 @@ function App() {
             
             {favoriteProducts.length > 0 && (
               <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">Total Cost (Best Prices)</h3>
-                    <p className="text-sm text-gray-600">
-                      Shopping at the cheapest supermarket for each item
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-emerald-600 flex items-center">
-                      <Yen className="h-8 w-8 mr-2" />
-                      {calculateTotalCost().toLocaleString()}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-1">Total Cost (Best Prices)</h3>
+                      <p className="text-sm text-gray-600">
+                        Shopping at the cheapest supermarket for each item
+                      </p>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {favoriteProducts.reduce((total, product) => total + (quantities[product.id] || 1), 0)} items total
-                    </p>
+                    <div className="text-right">
+                      <div className="text-3xl font-bold text-emerald-600 flex items-center">
+                        <Yen className="h-8 w-8 mr-2" />
+                        {calculateTotalCost().toLocaleString()}
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {favoriteProducts.reduce((total, product) => total + (quantities[product.id] || 1), 0)} items total
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="border-t pt-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">Cheapest Single Supermarket</h3>
+                        <p className="text-sm text-gray-600">
+                          Shopping everything at <span className="font-medium text-emerald-600">{cheapestSupermarket.name}</span>
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-3xl font-bold text-blue-600 flex items-center">
+                          <Yen className="h-8 w-8 mr-2" />
+                          {cheapestSupermarket.total.toLocaleString()}
+                        </div>
+                        <p className="text-sm text-gray-500 mt-1">
+                          +¥{(cheapestSupermarket.total - calculateTotalCost()).toLocaleString()} vs best prices
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-t pt-4">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Compare all supermarkets:</h4>
+                    <div className="grid grid-cols-3 gap-4">
+                      {[
+                        { id: 'seijo', name: 'SEIJO ISHII', total: supermarketTotals.seijo },
+                        { id: 'maruetsu', name: 'Maruetsu', total: supermarketTotals.maruetsu },
+                        { id: 'ff', name: 'F & F', total: supermarketTotals.ff }
+                      ].map(store => (
+                        <div key={store.id} className={`p-3 rounded-lg border-2 ${
+                          store.id === cheapestSupermarket.store 
+                            ? 'border-blue-500 bg-blue-50' 
+                            : 'border-gray-200 bg-gray-50'
+                        }`}>
+                          <div className="text-xs font-medium text-gray-600 mb-1">{store.name}</div>
+                          <div className={`text-lg font-bold flex items-center ${
+                            store.id === cheapestSupermarket.store ? 'text-blue-600' : 'text-gray-700'
+                          }`}>
+                            <Yen className="h-4 w-4 mr-1" />
+                            {store.total.toLocaleString()}
+                          </div>
+                          {store.id === cheapestSupermarket.store && (
+                            <div className="text-xs text-blue-600 font-medium mt-1">Cheapest!</div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
