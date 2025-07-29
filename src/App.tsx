@@ -513,10 +513,10 @@ function App() {
                         setFlaggingProduct({ productId: product.id, store: store.id });
                         setShowFlagModal(true);
                       }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-100 rounded"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-orange-100 rounded"
                       title="Flag incorrect price"
                     >
-                      <Flag className="h-3 w-3 text-gray-400 hover:text-orange-500" />
+                      <Flag className="h-3 w-3 text-orange-400 hover:text-orange-600" />
                     </button>
                   </div>
                 </div>
@@ -551,10 +551,10 @@ function App() {
                     setFlaggingProduct({ productId: product.id, store: lowestStore });
                     setShowFlagModal(true);
                   }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-gray-100 rounded"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-orange-100 rounded"
                   title="Flag incorrect price"
                 >
-                  <Flag className="h-4 w-4 text-gray-400 hover:text-orange-500" />
+                  <Flag className="h-4 w-4 text-orange-400 hover:text-orange-600" />
                 </button>
               </div>
             </div>
