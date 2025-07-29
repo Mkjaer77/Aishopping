@@ -369,6 +369,12 @@ function App() {
     return flaggedPrices.some(flag => flag.productId === productId && flag.store === store);
   };
 
+  const removeFlaggedPrice = (productId: number, store: string) => {
+    setFlaggedPrices(flaggedPrices.filter(flag => 
+      !(flag.productId === productId && flag.store === store)
+    ));
+  };
+
   const calculateTotalCost = () => {
     return favoriteProducts.reduce((total, product) => {
       const quantity = quantities[product.id] || 1;
@@ -493,7 +499,13 @@ function App() {
                       <Yen className="h-4 w-4 mr-1" />
                       {store.price.toLocaleString()}
                       {isPriceFlagged(product.id, store.id) && (
-                        <AlertTriangle className="h-3 w-3 ml-1 text-orange-500" />
+                        <button
+                          onClick={() => removeFlaggedPrice(product.id, store.id)}
+                          className="ml-1 hover:bg-orange-100 rounded p-0.5 transition-colors duration-200"
+                          title="Remove flag"
+                        >
+                          <AlertTriangle className="h-3 w-3 text-orange-500 hover:text-orange-600" />
+                        </button>
                       )}
                     </span>
                     <button
@@ -525,7 +537,13 @@ function App() {
                   <Yen className="h-5 w-5 mr-1" />
                   {showQuantity && quantity > 1 ? (lowestPrice * quantity).toLocaleString() : lowestPrice.toLocaleString()}
                   {isPriceFlagged(product.id, lowestStore) && (
-                    <AlertTriangle className="h-4 w-4 ml-1 text-orange-500" />
+                    <button
+                      onClick={() => removeFlaggedPrice(product.id, lowestStore)}
+                      className="ml-1 hover:bg-orange-100 rounded p-0.5 transition-colors duration-200"
+                      title="Remove flag"
+                    >
+                      <AlertTriangle className="h-4 w-4 text-orange-500 hover:text-orange-600" />
+                    </button>
                   )}
                 </div>
                 <button
