@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Star, MapPin, Search, Pen as Yen, Flag, AlertTriangle } from 'lucide-react';
-import Map from './components/Map';
 
 interface Product {
   id: number;
@@ -589,7 +588,7 @@ function App() {
       </div>
       
       <button className="w-full mt-4 bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 transition-colors duration-200">
-        Get Directions
+        View on Map
       </button>
     </div>
   );
@@ -773,10 +772,6 @@ function App() {
               <p className="text-gray-600">
                 Find all {stores.length} supermarkets in Tokyo
               </p>
-            </div>
-            
-            <div className="mb-8">
-              <Map stores={stores} />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
