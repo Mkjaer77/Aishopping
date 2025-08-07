@@ -624,9 +624,9 @@ function App() {
           {/* Tabs */}
           <div className="flex space-x-8 border-b border-gray-200">
             {[
-              { id: 'favorites', label: 'My Favorites', count: favorites.size },
+              { id: 'locations', label: 'Store Locations', count: stores.length },
               { id: 'products', label: 'All Products', count: filteredProducts.length },
-              { id: 'locations', label: 'Store Locations', count: stores.length }
+              { id: 'favorites', label: 'My Favorites', count: favorites.size }
             ].map(tab => (
               <button
                 key={tab.id}
